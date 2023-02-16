@@ -11,7 +11,7 @@ double Simps_f (double x){
     return 1.0 / sqrt (9 - x * x);
 }
 
-double db_f (double x, double y){
+double di_f (double x, double y){
     return (exp(sin(PI * x) * cos(PI * y)) + 1);
 }
 
@@ -54,7 +54,7 @@ void Simpson (const double a,
     *res = h / 3 * (f(a) + f(b) + 4 * first_sum + 2 * second_sum);
 }
 
-void db_Rect (const double a, const double b,
+void di_Rect (const double a, const double b,
               const double h, double *res, double f(double, double)){
     int i, j, n, m;
     double sum, x, y;
@@ -72,4 +72,24 @@ void db_Rect (const double a, const double b,
         }
     }
     *res = sum;
+}
+
+// realization method Monte-Karlo for rectangular areas
+void di_Monte_Karlo (const double a, const double b, const double c,
+                     const double d, const int N, double *res,
+                     double f(double, double)){   
+    srand(time(NULL));
+    int i;
+    double sum = 0.0;
+    double x_i, y_i;
+    double segment_x = b - a;
+    double segment_y = d - c;
+
+    #pragma omp parralel for private(x_i, y_i) reduction (+:sum)
+    for (i = 0; i < N; ++i){
+        x_i = (double) (rand()) / RAND_MAX * (segment_x + 1) + a;
+        y_i = (double) (rand()) / RAND_MAX * (segment_y + 1) + c;
+        sum += f (x_i, y_i);
+    }
+    *res = sum / N;
 }
