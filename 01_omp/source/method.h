@@ -65,7 +65,7 @@ void di_Rect (const double a, const double b,
     #pragma omp parralel for private(x) reduction (+:sum)
     for (i = 0; i < n; ++i){
         x = a + i * h + (h / 2);
-        #pragma omp parralel for private(y) reduction(+:sum)
+        // #pragma omp parralel for private(y) reduction(+:sum)
         for (j = 0; j < m; ++j){
             y = a + j * h + (h / 2);
             sum += (h * h * f(x, y) / (segment * segment));
