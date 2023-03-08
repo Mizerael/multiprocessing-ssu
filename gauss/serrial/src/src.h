@@ -2,12 +2,14 @@
 #define sSRC_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <iterator>
+#include <vector>
 // #include <conio.h>
 #include <time.h>
 #include <math.h>
+#include <chrono>
 
-
-
+extern std::vector<char *> cfg;
 extern int* pSerialPivotPos; // The Number of pivot rows selected at the
 // iterations
 extern int* pSerialPivotIter; // The Iterations, at which the rows were pivots

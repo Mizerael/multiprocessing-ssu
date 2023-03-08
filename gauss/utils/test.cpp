@@ -21,7 +21,7 @@ of the linear system matrix by the vector of unknowns */
         if (fabs(pRightPartVector[i]-pVector[i]) > Accuracy)
         equal = 1;
     }
-    if (equal == 1)
+    if (equal)
         printf("The result of the parallel Gauss algorithm is NOT correct."
                "Check your code.");
     else

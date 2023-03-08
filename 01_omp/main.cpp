@@ -19,7 +19,8 @@ int main(){
         // std::cout << "integral value: " << res << "\n"; 
     }
     auto end = std::chrono::steady_clock::now();
-    auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+    auto ms = 
+        std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
     std::cout << "execution time: " << avg_time / numbExp << "\nmin time: "; 
     std::cout << min_time << "\nmax time: " << max_time << "\n";
     std::cout << "real_time:" << ms.count() * 1e-3 <<"\n";

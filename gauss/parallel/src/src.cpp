@@ -22,31 +22,28 @@ void RandomDataInitialization (double* pMatrix, double* pVector, int Size) {
         for (i=0; i<Size; i++) {
             pVector[i] = rand()/double(1000);
             for (j=0; j<Size; j++) {
-                if (j <= i)
                     pMatrix[i*Size+j] = rand()/double(1000);
-                else
-                    pMatrix[i*Size+j] = 0;
-                }
+            }
         }
 }
 
 void ProcessInitialization (double* &pMatrix, double* &pVector,
                             double* &pResult, int &Size) {
     // Setting the size of the matrix and the vector
-    do {
-        printf("\nEnter size of the matrix and the vector: ");
-        scanf("%d", &Size);
-        printf("\nChosen size = %d \n", Size);
-        if (Size <= 0)
-            printf("\nSize of objects must be greater than 0!\n");
-    } while (Size <= 0);
-    // Memory allocation
+    // do {
+    //     printf("\nEnter size of the matrix and the vector: ");
+    //     scanf("%d", &Size);
+    //     printf("\nChosen size = %d \n", Size);
+    //     if (Size <= 0)
+    //         printf("\nSize of objects must be greater than 0!\n");
+    // } while (Size <= 0);
+    // // Memory allocation
     pMatrix = new double [Size*Size];
     pVector = new double [Size];
     pResult = new double [Size];
     // Initialization of the matrix and the vector elements
-    DummyDataInitialization(pMatrix, pVector, Size);
-    //RandomDataInitialization(pMatrix, pVector, Size);
+    // DummyDataInitialization(pMatrix, pVector, Size);
+    RandomDataInitialization(pMatrix, pVector, Size);
 }
 
 // Function for formatted matrix output
@@ -83,8 +80,8 @@ int ParallelFindPivotRow(double* pMatrix, int Size, int Iter) {
                 ThreadPivotRow.MaxValue = fabs(pMatrix[i*Size+Iter]);
             }
         }
-        printf("\n Local thread (id = %i) pivot row : %i ", 
-            omp_get_thread_num(), ThreadPivotRow.PivotRow);
+        // printf("\n Local thread (id = %i) pivot row : %i ", 
+        //     omp_get_thread_num(), ThreadPivotRow.PivotRow);
         #pragma omp critical
         {
             if (ThreadPivotRow.MaxValue > MaxValue){

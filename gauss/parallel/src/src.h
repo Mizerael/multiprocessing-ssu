@@ -2,9 +2,12 @@
 #define pSRC_H
 #include <stdio.h>
 #include <stdlib.h>
+#include <iterator>
+#include <vector>
 // #include <conio.h>
 #include <time.h>
 #include <math.h>
+#include <chrono>
 
 #ifdef _OPENMP
 #include <omp.h>
@@ -15,6 +18,7 @@ typedef struct {
     double MaxValue;
 } TThreadPivotRow;
 
+extern std::vector<char *> cfg;
 extern int* pPivotPos; // The number of pivot rows selected at the iterations
 extern int* pPivotIter; // The iterations, at which the rows were pivots
 

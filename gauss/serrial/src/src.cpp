@@ -24,8 +24,6 @@ void RandomDataInitialization (double* pMatrix, double* pVector, int Size) {
             for (j=0; j<Size; j++) {
                 if (j <= i)
                     pMatrix[i*Size+j] = rand()/double(1000);
-                else
-                    pMatrix[i*Size+j] = 0;
                 }
         }
 }
@@ -33,20 +31,20 @@ void RandomDataInitialization (double* pMatrix, double* pVector, int Size) {
 void ProcessInitialization (double* &pMatrix, double* &pVector,
                             double* &pResult, int &Size) {
     // Setting the size of the matrix and the vector
-    do {
-        printf("\nEnter size of the matrix and the vector: ");
-        scanf("%d", &Size);
-        printf("\nChosen size = %d \n", Size);
-        if (Size <= 0)
-            printf("\nSize of objects must be greater than 0!\n");
-    } while (Size <= 0);
+    // do {
+    //     printf("\nEnter size of the matrix and the vector: ");
+    //     scanf("%d", &Size);
+    //     printf("\nChosen size = %d \n", Size);
+    //     if (Size <= 0)
+    //         printf("\nSize of objects must be greater than 0!\n");
+    // } while (Size <= 0);
     // Memory allocation
     pMatrix = new double [Size*Size];
     pVector = new double [Size];
     pResult = new double [Size];
     // Initialization of the matrix and the vector elements
-    DummyDataInitialization(pMatrix, pVector, Size);
-    //RandomDataInitialization(pMatrix, pVector, Size);
+    // DummyDataInitialization(pMatrix, pVector, Size);
+    RandomDataInitialization(pMatrix, pVector, Size);
 }
 
 void PrintMatrix (double* pMatrix, int RowCount, int ColCount) {
