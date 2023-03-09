@@ -22,11 +22,9 @@ int main(int argc, char *argv[]) {
         // PrintVector(pVector, Size);
         // Execution of Gauss algorithm
         auto begin = std::chrono::steady_clock::now();
-        start = clock();
-        SerialResultCalculation(pMatrix, pVector, pResult, Size);
-        finish = clock();
+        Seidel_alghoritm(pMatrix, pVector, pResult, Size);
+        // SerialResultCalculation(pMatrix, pVector, pResult, Size);
         auto end = std::chrono::steady_clock::now();
-        duration = (finish-start) / CLOCKS_PER_SEC;
         auto ms =
              std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
 
@@ -36,8 +34,6 @@ int main(int argc, char *argv[]) {
         // Testing the result
         // TestResult(pMatrix, pVector, pResult, Size);
         // Printing the execution time of Gauss method
-        printf("\n processor time of execution for %d elements: %f\n",
-               Size, duration);
         printf("\n real time of execution for %d elements: %f\n",
                Size, ms.count() * 1e-3);
         // Computational process termination

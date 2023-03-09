@@ -22,9 +22,9 @@ of the linear system matrix by the vector of unknowns */
         equal = 1;
     }
     if (equal)
-        printf("The result of the parallel Gauss algorithm is NOT correct."
+        printf("\nThe result of the parallel Gauss algorithm is NOT correct."
                "Check your code.");
     else
-        printf("The result of the parallel Gauss algorithm is correct.");
+        printf("\nThe result of the parallel Gauss algorithm is correct.");
     delete [] pRightPartVector;
 }

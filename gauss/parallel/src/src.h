@@ -30,7 +30,7 @@ void RandomDataInitialization (double* pMatrix, double* pVector, int Size);
 
 // Function for memory allocation and definition of the objects elements
 void ProcessInitialization (double* &pMatrix, double* &pVector,
-                            double* &pResult, int &Size);
+                            double* &pResult, int &Size, bool fl = false);
 
 // Function for formatted matrix output
 void PrintMatrix (double* pMatrix, int RowCount, int ColCount);
@@ -55,4 +55,10 @@ void ParallelResultCalculation(double* pMatrix, double* pVector,
 
 // Function for computational process termination
 void ProcessTermination (double* pMatrix, double* pVector, double* pResult);
+
+// Function for initialization matrix in accordance with the assignment
+void AssignmentDataInitialization (double* pMatrix, double* pVector, int Size);
+
+void Seidel_alghoritm (double* pMatrix, double* pVector,
+                       double* pResult, int Size);
 #endif

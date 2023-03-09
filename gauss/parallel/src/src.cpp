@@ -20,15 +20,15 @@ void RandomDataInitialization (double* pMatrix, double* pVector, int Size) {
     int i, j; // Loop variables
     srand(unsigned(clock()));
         for (i=0; i<Size; i++) {
-            pVector[i] = rand()/double(1000);
+            pVector[i] = rand() / (double)(1000);
             for (j=0; j<Size; j++) {
-                    pMatrix[i*Size+j] = rand()/double(1000);
+                    pMatrix[i*Size+j] = rand() / (double)(1000);
             }
         }
 }
 
 void ProcessInitialization (double* &pMatrix, double* &pVector,
-                            double* &pResult, int &Size) {
+                            double* &pResult, int &Size, bool fl) {
     // Setting the size of the matrix and the vector
     // do {
     //     printf("\nEnter size of the matrix and the vector: ");
@@ -43,7 +43,14 @@ void ProcessInitialization (double* &pMatrix, double* &pVector,
     pResult = new double [Size];
     // Initialization of the matrix and the vector elements
     // DummyDataInitialization(pMatrix, pVector, Size);
-    RandomDataInitialization(pMatrix, pVector, Size);
+    switch (fl){
+        case false:
+            RandomDataInitialization(pMatrix, pVector, Size);
+            break;
+        case true:
+            AssignmentDataInitialization(pMatrix, pVector, 5);
+            break;
+    }
 }
 
 // Function for formatted matrix output
@@ -159,3 +166,83 @@ void ProcessTermination (double* pMatrix, double* pVector, double* pResult) {
     delete [] pVector;
     delete [] pResult;
 } 
+// CRINGE DATA INITIALIZATION
+void AssignmentDataInitialization (double* pMatrix, double* pVector, int Size){
+    pMatrix[0] = 1;
+    pMatrix[1] = 1;
+    pMatrix[2] = 1;
+    pMatrix[3] = 1;
+    pMatrix[4] = 1;
+//  KILL ME PLEASE
+    pMatrix[5] = 1;
+    pMatrix[6] = 2;
+    pMatrix[7] = 3;
+    pMatrix[8] = 4;
+    pMatrix[9] = 5;
+
+    pMatrix[10] = 1;
+    pMatrix[11] = 3;
+    pMatrix[12] = 6;
+    pMatrix[13] = 10;
+    pMatrix[14] = 15;
+
+    pMatrix[15] = 1;
+    pMatrix[16] = 4;
+    pMatrix[17] = 10;
+    pMatrix[18] = 20;
+    pMatrix[19] = 35;
+
+    pMatrix[20] = 1;
+    pMatrix[21] = 5;
+    pMatrix[22] = 15;
+    pMatrix[23] = 35;
+    pMatrix[24] = 70;
+
+    pVector[0] = 15;
+    pVector[1] = 35;
+    pVector[2] = 70;
+    pVector[3] = 126;
+    pVector[4] = 210;
+}
+
+// need to add a check that the slough has a solution
+void Seidel_alghoritm(double* pMatrix, double* pVector,
+                               double* pResult, int Size){
+
+    
+    for(int i = 0; i < Size; ++i){
+        pResult[i] = 0.0;
+    }
+    for (int k = 0 ; k < Size; k++)
+    {
+        double delta = 0;
+        double *pNewResult = new double [Size];
+
+        for (int i = 0; i < Size; ++i){
+            double firstSum = 0;
+            double secondSum = 0;
+            
+            pNewResult[i] = pVector[i];
+
+            #pragma omp parralel for reduction(+:firstSum)
+            for (int j = 0; j < i; ++j)
+                firstSum += pMatrix[i * Size + j] * pNewResult[j];
+            
+            #pragma omp parralel for reduction(+:secondSum)
+            for (int j = i + 1; j < Size; ++j)
+                secondSum += pMatrix[i * Size + j] * pResult[j];
+
+            pNewResult[i] -= (firstSum + secondSum);
+            pNewResult[i] /= pMatrix[i * Size + i];
+        }
+
+        #pragma omp parralel for reduction(+:delta)
+        for (int i = 0; i < Size; ++i){
+            delta += std::abs(pResult[i] - pNewResult[i]);
+            pResult[i] = pNewResult[i];
+        }
+
+        // printf("\ndelta: %f \n", delta);
+        if (delta < 1e-5) break;
+    }
+}

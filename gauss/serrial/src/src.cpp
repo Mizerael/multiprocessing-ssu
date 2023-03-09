@@ -142,3 +142,39 @@ void ProcessTermination (double* pMatrix, double* pVector, double* pResult) {
     delete [] pVector;
     delete [] pResult;
 }
+// need to add a check that the slough has a solution
+void Seidel_alghoritm(double* pMatrix, double* pVector,
+                               double* pResult, int Size){
+
+    
+    for(int i = 0; i < Size; ++i){
+        pResult[i] = 0.0;
+    }
+    for (int k = 0 ; k < Size; k++)
+    {
+        double delta = 0;
+        double *pNewResult = new double [Size];
+        for (int i = 0; i < Size; ++i){
+            double firstSum = 0;
+            double secondSum = 0;
+            
+            pNewResult[i] = pVector[i];
+
+            for (int j = 0; j < i; ++j)
+                firstSum += pMatrix[i * Size + j] * pNewResult[j];
+            
+            for (int j = i + 1; j < Size; ++j)
+                secondSum += pMatrix[i * Size + j] * pResult[j];
+
+            pNewResult[i] -= (firstSum + secondSum);
+            pNewResult[i] /= pMatrix[i * Size + i];
+        }
+        for (int i = 0; i < Size; ++i){
+            delta += std::abs(pResult[i] - pNewResult[i]);
+            pResult[i] = pNewResult[i];
+        }
+
+        // printf("\ndelta: %f \n", delta);
+        if (delta < 1e-5) break;
+    }
+}

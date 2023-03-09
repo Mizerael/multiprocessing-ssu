@@ -49,4 +49,7 @@ void SerialGaussianElimination(double* pMatrix,double* pVector,int Size);
 void SerialBackSubstitution (double* pMatrix, double* pVector, double* pResult,
                              int Size);
 void ProcessTermination (double* pMatrix, double* pVector, double* pResult);
+
+void Seidel_alghoritm(double* pMatrix, double* pVector, double* pResult,
+                      int Size);
 #endif
