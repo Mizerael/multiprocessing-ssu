@@ -5,11 +5,17 @@
 #include <cmath>
 #include <complex>
 #include <chrono>
+#include <vector>
+
+#include "config.h"
 
 void DummyDataInitialization(std::complex<double> *mas, int size);
 
+void RandomDataInitialization(std::complex<double> *mas, int size);
+
 void ProcessInitalization(std::complex<double> *&inputSignal,
-                          std::complex<double> *&outputSignal, int &size);
+                          std::complex<double> *&outputSignal, int &size,
+                          config *cfg);
 
 void ProcessTermination(std::complex<double> *&inputSignal,
                         std::complex<double> *&outputSignal);

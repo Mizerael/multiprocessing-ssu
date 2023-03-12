@@ -7,7 +7,8 @@ void DummyDataInitialization(std::complex<double> *mas, int size){
 }
 //Memory allocation
 void ProcessInitalization(std::complex<double> *&inputSignal,
-                          std::complex<double> *&outputSignal, int &size){
+                          std::complex<double> *&outputSignal, int &size,
+                          config *cfg){
     do {
         std::cout << "Set length of input signal:";
         std::cin >> size;
@@ -29,9 +30,10 @@ void ProcessInitalization(std::complex<double> *&inputSignal,
     inputSignal = new std::complex<double>[size];
     outputSignal = new std::complex<double>[size];
     //Test initialization of input elements
-    DummyDataInitialization(inputSignal, size);
-    //Computational experiments
-    // RandomDataInitialization(inputSignal, Size);
+    if (cfg->dataInitialization)
+        RandomDataInitialization(inputSignal, size);
+    else
+        DummyDataInitialization(inputSignal, size);
 }
 //Process termination
 void ProcessTermination(std::complex<double> *&inputSignal,
@@ -93,4 +95,10 @@ void PrintSignal(std::complex<double> *signal, int size){
     std::cout << "Result signal:\n";
     for(int i = 0; i < size; i++)
         std::cout << signal[i] << '\n';
+}
+
+void RandomDataInitialization(std::complex<double> *mas, int size){
+    srand(unsigned(clock()));
+    for(int i = 0; i < size; i++)
+        mas[i] = std::complex<double>(rand() / 1000.0, rand() / 1000.0);
 }
