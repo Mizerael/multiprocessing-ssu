@@ -224,11 +224,11 @@ void Seidel_alghoritm(double* pMatrix, double* pVector,
             
             pNewResult[i] = pVector[i];
 
-            #pragma omp parralel for reduction(+:firstSum)
+            #pragma omp parallel for reduction(+:firstSum)
             for (int j = 0; j < i; ++j)
                 firstSum += pMatrix[i * Size + j] * pNewResult[j];
             
-            #pragma omp parralel for reduction(+:secondSum)
+            #pragma omp parallel for reduction(+:secondSum)
             for (int j = i + 1; j < Size; ++j)
                 secondSum += pMatrix[i * Size + j] * pResult[j];
 
@@ -236,7 +236,7 @@ void Seidel_alghoritm(double* pMatrix, double* pVector,
             pNewResult[i] /= pMatrix[i * Size + i];
         }
 
-        #pragma omp parralel for reduction(+:delta)
+        #pragma omp parallel for reduction(+:delta)
         for (int i = 0; i < Size; ++i){
             delta += std::abs(pResult[i] - pNewResult[i]);
             pResult[i] = pNewResult[i];

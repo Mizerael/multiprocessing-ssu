@@ -23,7 +23,7 @@ void Rectangle (const double a,
     n = (int) ((b - a) / h);
     sum = 0.0;
 
-    #pragma omp parralel for private(x) reduction(+:sum)
+    #pragma omp parallel for private(x) reduction(+:sum)
     for (i = 0 ; i < n; ++i){
         x = a + i * h + h / 2.0;
         sum += f(x)*h;
@@ -39,13 +39,13 @@ void Simpson (const double a,
     n = (int) ((b - a) / (2 * h));
     first_sum = second_sum = 0.0;
 
-    #pragma omp parralel for private(x) reduction(+:first_sum)
+    #pragma omp parallel for private(x) reduction(+:first_sum)
     for (i = 1; i <= n; ++i){
         x = a + (2 * i - 1) * h;
         first_sum += f(x);
     }
     
-    #pragma omp parralel for private(x) reduction(+: second_sum)
+    #pragma omp parallel for private(x) reduction(+: second_sum)
     for (i = 1; i < n; ++i){
         x = a + 2 * i * h;
         second_sum += f(x);
@@ -62,10 +62,10 @@ void di_Rect (const double a, const double b,
     sum = 0.0;
     double segment = b - a;
 
-    #pragma omp parralel for private(x) reduction (+:sum)
+    #pragma omp parallel for private(x) reduction (+:sum)
     for (i = 0; i < n; ++i){
         x = a + i * h + (h / 2);
-        // #pragma omp parralel for private(y) reduction(+:sum)
+        // #pragma omp parallel for private(y) reduction(+:sum)
         for (j = 0; j < m; ++j){
             y = a + j * h + (h / 2);
             sum += (h * h * f(x, y) / (segment * segment));
@@ -85,7 +85,7 @@ void di_Monte_Karlo (const double a, const double b, const double c,
     double segment_x = b - a;
     double segment_y = d - c;
 
-    #pragma omp parralel for private(x_i, y_i) reduction (+:sum)
+    #pragma omp parallel for private(x_i, y_i) reduction (+:sum)
     for (i = 0; i < N; ++i){
         x_i = (double) (rand()) / RAND_MAX * (segment_x + 1) + a;
         y_i = (double) (rand()) / RAND_MAX * (segment_y + 1) + c;
