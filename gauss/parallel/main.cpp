@@ -40,7 +40,6 @@ int main(int argc, char *argv[]) {
             // printf("\nResult Vector \n");
             // PrintVector(pResult, Size);
         }
-        double start, finish, duration;
         auto begin = std::chrono::steady_clock::now();
         Seidel_alghoritm(pMatrix, pVector, pResult, Size);
         // ParallelResultCalculation(pMatrix, pVector, pResult, Size);

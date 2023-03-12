@@ -10,10 +10,11 @@ void ProcessInitalization(std::complex<double> *&inputSignal,
                           std::complex<double> *&outputSignal, int &size,
                           config *cfg){
     do {
-        std::cout << "Set length of input signal:";
-        std::cin >> size;
-        if (size < 4)
+        if (size < 4){
             std::cout << "Input signal length should be >= 4\n";
+            std::cout << "Set length of input signal:";
+            std::cin >> size;
+        }
         else {
             int tmpSize = size;
             while (tmpSize != 1) {
@@ -63,6 +64,29 @@ void BitReversing(std::complex<double> *inputSignal,
     }
 }
 
+void ParralelBitReversing(std::complex<double> *inputSignal,
+                          std::complex<double> *outputSignal, int size) {
+    int bitsCount = 0;
+    for (int tmp_size = size; tmp_size > 1; tmp_size /= 2, bitsCount++);
+    //ind - index in input array
+    //revInd - correspondent to ind index in output array
+    int mask = 1 << (bitsCount - 1);
+    #pragma omp parralel for
+    for (int ind = 0; ind < size; ind++)
+    {
+        int revInd = 0;
+        #pragma omp parralel for reduction(+ : revInd)
+        for (int i = 0; i < bitsCount; i++) //bit-reversing
+        {
+            int itMask = mask >> i;
+            bool val = ind & itMask;
+            revInd |= val << i;
+            // mask = mask >> 1;
+        }
+        outputSignal[revInd] = inputSignal[ind];
+    }
+}
+
 inline void Butterfly(std::complex<double> *signal, std::complex<double> u,
                       int offset, int butterflySize){
     std::complex<double> tem = signal[offset + butterflySize] * u;
@@ -70,14 +94,18 @@ inline void Butterfly(std::complex<double> *signal, std::complex<double> u,
     signal[offset] += tem;
 }
 
-void SerrialFFTCalculation(std::complex<double> *signal, int size){
+void FFTCalculation(std::complex<double> *signal, int size){
     int m = 0;
+    #pragma omp parralel for
     for (int tmp_size = size; tmp_size > 1; tmp_size /= 2, m++);
+    #pragma omp parralel for
     for (int p = 0; p < m; p++) {
         int butterflyOffset = 1 << (1 + p);
         int butterflySize = butterflyOffset >> 1;
         double coeff = M_PI / butterflySize;
+    #pragma omp parralel for
         for (int i = 0; i < size / butterflyOffset; i++)
+    #pragma omp parralel for
             for (int j = 0; j < butterflySize; j++)
                 Butterfly(signal, 
                           std::complex<double>(cos(-j * coeff),sin(-j * coeff)),
@@ -85,10 +113,13 @@ void SerrialFFTCalculation(std::complex<double> *signal, int size){
     }
 }
 
-void SerrialFFT(std::complex<double> *inputSignal,
-                std::complex<double> *outputSignal, int size){
+void FastFourierTransform(std::complex<double> *inputSignal,
+                std::complex<double> *outputSignal, int size, config *cfg){
+    // if (cfg->parralel_bit)
+    //     ParralelBitReversing(inputSignal, outputSignal, size);
+    // else
     BitReversing(inputSignal, outputSignal, size);
-    SerrialFFTCalculation(outputSignal, size);
+    FFTCalculation(outputSignal, size);
 }
 
 void PrintSignal(std::complex<double> *signal, int size){

@@ -17,5 +17,18 @@ void ParseArguments(int argc, char* argv[], config *&cfg){
                 }
             i = j - 1;
         }
+         else if ((std::string) argv[i] == "-r") {
+            int j = i + 1;
+            if (j < argc) {
+                auto val = atoi(argv[j]);
+                if (val)
+                    cfg->repeatCount = val;
+                i = j;
+            }
+         }
+        else if ((std::string) argv[i] == "-p")
+            cfg->is_print = true;
+        else if ((std::string) argv[i] == "-b")
+            cfg->parralel_bit = true;
     }
 }
