@@ -113,7 +113,8 @@ void FFTCalculation(std::complex<double> *signal, int size){
 }
 
 void FastFourierTransform(std::complex<double> *inputSignal,
-                std::complex<double> *outputSignal, int size, config *cfg){
+                          std::complex<double> *outputSignal,
+                          int size, config *cfg){
     // if (cfg->parralel_bit)
     //     ParralelBitReversing(inputSignal, outputSignal, size);
     // else

@@ -10,7 +10,8 @@ int main(int argc, char* argv[]){
     ParseArguments(argc, argv, cfg);
     
     for (auto size : cfg->size){
-        std::chrono::milliseconds minDuration = std::chrono::milliseconds::max();
+        std::chrono::milliseconds minDuration = std::chrono::
+                                                     milliseconds::max();
         std::complex<double> *inputSignal = NULL;
         std::complex<double> *outputSignal = NULL;
 
