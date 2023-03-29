@@ -2,7 +2,7 @@
 #include <math.h>
 
 #ifdef _OPENMP
-#include <omp.h>
+    #include <omp.h>
 #endif
 
 #define PI 3.1415926535897932384626433832795
@@ -15,16 +15,14 @@ double di_f (double x, double y){
     return (exp(sin(PI * x) * cos(PI * y)) + 1);
 }
 
-void Rectangle (const double a,
-                const double b, const double h, double *res, double f(double)){
-    int i, n;
-    double sum;
+void Rectangle (const double a, const double b, const double h, 
+                double *res, double f(double)){
+    int n;
+    double sum = 0.0;
     double x;
     n = (int) ((b - a) / h);
-    sum = 0.0;
-
     #pragma omp parallel for private(x) reduction(+:sum)
-    for (i = 0 ; i < n; ++i){
+    for (int i = 0 ; i < n; ++i){
         x = a + i * h + h / 2.0;
         sum += f(x)*h;
     }

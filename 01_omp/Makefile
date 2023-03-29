@@ -1,3 +1,5 @@
+.PHONY: all
+
 all: single multi
 
 multi: main.cpp
