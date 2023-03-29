@@ -1,7 +1,12 @@
 #include "src/src.h"
 #include "src/config.h"
 
+
 int main(int argc, char* argv[]){
+    #ifdef _OPENMP
+    omp_set_dynamic(0);
+    omp_set_num_threads(10);
+    #endif
     #ifdef _OPENMP
     omp_set_dynamic(0);
     omp_set_num_threads(10);

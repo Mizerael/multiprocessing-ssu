@@ -71,11 +71,19 @@ void ParralelBitReversing(std::complex<double> *inputSignal,
     //ind - index in input array
     //revInd - correspondent to ind index in output array
     int mask = 1 << (bitsCount - 1);
+<<<<<<< HEAD
     #pragma omp parallel for
     for (int ind = 0; ind < size; ind++)
     {
         int revInd = 0;
         #pragma omp parallel for reduction(+ : revInd)
+=======
+    #pragma omp parralel for
+    for (int ind = 0; ind < size; ind++)
+    {
+        int revInd = 0;
+        #pragma omp parralel for reduction(+ : revInd)
+>>>>>>> 5dd109a179b56a447de3cacbc40660e19b7320ca
         for (int i = 0; i < bitsCount; i++) //bit-reversing
         {
             int itMask = mask >> i;
@@ -96,15 +104,26 @@ inline void Butterfly(std::complex<double> *signal, std::complex<double> u,
 
 void FFTCalculation(std::complex<double> *signal, int size){
     int m = 0;
+    #pragma omp parralel for
     for (int tmp_size = size; tmp_size > 1; tmp_size /= 2, m++);
+<<<<<<< HEAD
     #pragma omp parallel for
+=======
+    #pragma omp parralel for
+>>>>>>> 5dd109a179b56a447de3cacbc40660e19b7320ca
     for (int p = 0; p < m; p++) {
         int butterflyOffset = 1 << (1 + p);
         int butterflySize = butterflyOffset >> 1;
         double coeff = M_PI / butterflySize;
+<<<<<<< HEAD
     #pragma omp parallel for
         for (int i = 0; i < size / butterflyOffset; i++)
     #pragma omp parallel for
+=======
+    #pragma omp parralel for
+        for (int i = 0; i < size / butterflyOffset; i++)
+    #pragma omp parralel for
+>>>>>>> 5dd109a179b56a447de3cacbc40660e19b7320ca
             for (int j = 0; j < butterflySize; j++)
                 Butterfly(signal, 
                           std::complex<double>(cos(-j * coeff),sin(-j * coeff)),
@@ -113,8 +132,12 @@ void FFTCalculation(std::complex<double> *signal, int size){
 }
 
 void FastFourierTransform(std::complex<double> *inputSignal,
+<<<<<<< HEAD
                           std::complex<double> *outputSignal,
                           int size, config *cfg){
+=======
+                std::complex<double> *outputSignal, int size, config *cfg){
+>>>>>>> 5dd109a179b56a447de3cacbc40660e19b7320ca
     // if (cfg->parralel_bit)
     //     ParralelBitReversing(inputSignal, outputSignal, size);
     // else
